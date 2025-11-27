@@ -71,9 +71,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- 3. DATA LOADING ---
+# Add this import at the very top of your file with the others
+import os 
+
+# ... (keep your CSS and Page Config code as is) ...
+
+# --- 2. DATA LOADING & CLEANING ---
 @st.cache_data
 def get_data():
-    df = pd.read_csv('sales_data.csv')
+    # START OF FIX: Get the absolute path of the current file
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, 'sales_data.csv')
+    # END OF FIX
+    
+    # Load data using the precise path
+    df = pd.read_csv(file_path)
     
     # Cleaning
     df['Quantity Ordered'] = pd.to_numeric(df['Quantity Ordered'], errors='coerce')
